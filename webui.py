@@ -419,6 +419,7 @@ def api_sessions() -> Any:
             "session_id": None,
             "count": 0,
             "providers": set(),
+            "models": set(),
             "first_timestamp": None,
             "last_timestamp": None,
             "total_input_chars_estimate": 0,
@@ -431,6 +432,9 @@ def api_sessions() -> Any:
         item["session_id"] = sid
         item["count"] += 1
         item["providers"].add(row.get("provider") or "unknown")
+        model = row.get("model")
+        if model:
+            item["models"].add(model)
 
         ts = row.get("timestamp")
         if item["first_timestamp"] is None or _parse_time(ts) < _parse_time(item["first_timestamp"]):
@@ -449,6 +453,7 @@ def api_sessions() -> Any:
                 "session_id": sid,
                 "count": item["count"],
                 "providers": sorted(item["providers"]),
+                "models": sorted(item["models"]),
                 "first_timestamp": item["first_timestamp"],
                 "last_timestamp": item["last_timestamp"],
                 "total_input_chars_estimate": item["total_input_chars_estimate"],

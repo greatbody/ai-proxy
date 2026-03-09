@@ -58,3 +58,8 @@ This is a **High-Fidelity LLM Traffic Inspector**. It acts as an HTTPS intercept
 - **`events.ndjson` source of truth**: Modified `_load_all_flow_summaries()` in `webui.py`. Instead of iterating over the entire `logs/requests` JSON directory and reading/parsing thousands of JSON bodies per API call, it now reads the single `events.ndjson` log to instantly reconstruct the summaries.
 - Reduced data payload fetch times from ~0.500 seconds to ~0.050 seconds for large pools of data.
 - Deletion API route was also updated to slice removed IDs directly out of `events.ndjson` sequentially.
+
+## Key Recent Changes (Mar 05, 2026)
+### 7. Windows Startup Support
+- Added `run_proxy.bat` and `run_webui.bat` for Windows to mirror the Unix launch scripts: optional venv activation, `.env` loading, then start mitmproxy or the Flask web UI.
+- README now documents Windows manual startup commands and notes that the mitmproxy CA must be trusted in Windows to capture HTTPS traffic.

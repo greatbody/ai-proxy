@@ -329,8 +329,14 @@ class LLMCaptureAddon:
             "summary": req_summary,
         }
 
-        req_file = self.reqs_dir / f"{flow_id}.json"
-        req_file.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Only persist full request JSON for recognised AI providers
+        req_file_str: Optional[str] = None
+        if provider != "unknown":
+            req_file = self.reqs_dir / f"{flow_id}.json"
+            req_file.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+            req_file_str = str(req_file)
+
+        # Always append a lightweight summary event
         self._append_event(
             {
                 "event": "request",
@@ -343,7 +349,7 @@ class LLMCaptureAddon:
                 "url": flow.request.pretty_url,
                 "model": req_summary.get("model"),
                 "input_chars_estimate": req_summary.get("input_chars_estimate"),
-                "request_file": str(req_file),
+                "request_file": req_file_str,
             }
         )
 
@@ -385,8 +391,14 @@ class LLMCaptureAddon:
             },
         }
 
-        resp_file = self.resp_dir / f"{flow_id}.json"
-        resp_file.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Only persist full response JSON for recognised AI providers
+        resp_file_str: Optional[str] = None
+        if provider != "unknown":
+            resp_file = self.resp_dir / f"{flow_id}.json"
+            resp_file.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+            resp_file_str = str(resp_file)
+
+        # Always append a lightweight summary event
         self._append_event(
             {
                 "event": "response",
@@ -396,7 +408,7 @@ class LLMCaptureAddon:
                 "host": host,
                 "status_code": flow.response.status_code,
                 "response_id": response_id,
-                "response_file": str(resp_file),
+                "response_file": resp_file_str,
             }
         )
 

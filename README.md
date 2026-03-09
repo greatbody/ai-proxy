@@ -32,8 +32,10 @@ By default, it captures all traffic passing through the proxy. You can optionall
 
 - `llm_capture_addon.py`: mitmproxy addon (capture + metadata)
 - `run_proxy.sh`: starts proxy at `127.0.0.1:8080` (foreground)
+- `run_proxy.bat`: Windows proxy launcher
 - `webui.py`: local API + UI server
 - `run_webui.sh`: starts web UI server (foreground)
+- `run_webui.bat`: Windows web UI launcher
 - `webui/static/index.html`: frontend
 - `inspect_logs.py`: CLI analyzer for largest requests
 - `.env.example`: runtime config
@@ -56,6 +58,7 @@ cp .env.example .env
 
 ### Option A: Manual Setup (Foreground)
 
+#### macOS/Linux:
 1. Start proxy:
 ```bash
 ./run_proxy.sh
@@ -65,6 +68,18 @@ cp .env.example .env
 ```bash
 ./run_webui.sh
 ```
+
+#### Windows:
+1. Start proxy:
+```cmd
+run_proxy.bat
+```
+
+2. Start web UI:
+```cmd
+run_webui.bat
+```
+
 
 ### Option B: macOS Background Services
 
@@ -96,6 +111,7 @@ To inspect HTTPS bodies, your client must trust mitmproxy's local CA cert.
 After first proxy run, cert files are created under `~/.mitmproxy/`.
 
 - macOS: import `~/.mitmproxy/mitmproxy-ca-cert.pem` into System keychain and set to Always Trust.
+- Windows: import `%USERPROFILE%\.mitmproxy\mitmproxy-ca-cert.pem` into Trusted Root Certification Authorities.
 - Python requests/curl: optionally set `SSL_CERT_FILE` or `REQUESTS_CA_BUNDLE` to this cert.
 
 Without trust setup, HTTPS clients may fail TLS verification.

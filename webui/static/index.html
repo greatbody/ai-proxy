@@ -1456,8 +1456,10 @@
           const sid = s.session_id || 'none';
           const div = document.createElement('div');
           div.className = `session-item${el.sessionFilter.value === sid ? ' active' : ''}`;
+          const modelsHtml = (s.models || []).map(m => `<span class="model-label">${esc(m)}</span>`).join(' ');
           div.innerHTML = `
             <div class="session-id" style="padding-right:28px">${shortId(sid)}</div>
+            ${modelsHtml ? `<div class="session-meta" style="margin-bottom:2px">${modelsHtml}</div>` : ''}
             <div class="session-meta">
               <span><span class="session-count">${s.count}</span> flows</span>
               <span class="chars-label">${fmt(s.total_input_chars_estimate)} ch</span>
